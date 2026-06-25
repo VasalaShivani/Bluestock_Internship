@@ -43,12 +43,12 @@ def fetch_nav_data():
                 output_file = os.path.join(RAW_DATA_DIR, f"nav_{code}_{name}.csv")
                 df.to_csv(output_file, index=False)
                 
-                print(f"✅ Success! Saved {len(df)} rows to {output_file}\n")
+                print(f"Success! Saved {len(df)} rows to {output_file}\n")
             else:
-                print(f"⚠️ Warning: No historical NAV data found for {name} ({code}).\n")
+                print(f" Warning: No historical NAV data found for {name} ({code}).\n")
                 
         except requests.exceptions.RequestException as e:
-            print(f"❌ Failed to fetch data for {name} ({code}): {e}\n")
+            print(f" Failed to fetch data for {name} ({code}): {e}\n")
 
 if __name__ == "__main__":
     fetch_nav_data()
