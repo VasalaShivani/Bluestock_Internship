@@ -20,7 +20,7 @@ def build_and_load_database():
                     connection.exec_driver_sql(query)
         print(" Database schema created.")
     except FileNotFoundError:
-        print("❌ Error: Could not find 'sql/schema.sql'. Make sure you created the file inside the sql folder!")
+        print(" Error: Could not find 'sql/schema.sql'. Make sure you created the file inside the sql folder!")
         return
 
     # 2. Load the specific dataframes into the specific SQL tables
