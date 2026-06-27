@@ -18,7 +18,7 @@ def build_and_load_database():
             for query in schema_queries:
                 if query.strip():
                     connection.exec_driver_sql(query)
-        print("✅ Database schema created.")
+        print(" Database schema created.")
     except FileNotFoundError:
         print("❌ Error: Could not find 'sql/schema.sql'. Make sure you created the file inside the sql folder!")
         return
@@ -40,9 +40,9 @@ def build_and_load_database():
             
             # Write data to SQL
             df.to_sql(table_name, engine, if_exists='replace', index=False)
-            print(f"✅ Loaded {len(df)} rows into {table_name}")
+            print(f" Loaded {len(df)} rows into {table_name}")
         else:
-            print(f"⚠️ Warning: Could not find {csv_file} in the processed folder.")
+            print(f" Warning: Could not find {csv_file} in the processed folder.")
 
 if __name__ == "__main__":
     build_and_load_database()
