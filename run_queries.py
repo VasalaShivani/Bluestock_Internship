@@ -27,7 +27,7 @@ def execute_and_save_queries():
                     output_file.write(f"[ERROR] Could not run query: {e}\n\n")
                     
     conn.close()
-    print("✅ All queries executed! Check 'sql/query_results.txt' for your answers.")
+    print(" All queries executed! Check 'sql/query_results.txt' for your answers.")
 
 if __name__ == "__main__":
     execute_and_save_queries()
