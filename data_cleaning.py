@@ -24,7 +24,7 @@ def clean_nav_history():
     
     # Safety check to ensure the rename worked
     if 'nav_date' not in df.columns:
-        print("❌ CRITICAL ERROR: Could not find the date column. Look at the 'Actual columns found' list above and update the script to match!")
+        print(" CRITICAL ERROR: Could not find the date column. Look at the 'Actual columns found' list above and update the script to match!")
         return
 
     # 4. Parse dates to datetime
@@ -38,7 +38,7 @@ def clean_nav_history():
         # 7. Remove duplicates
         df = df.drop_duplicates(subset=['amfi_code', 'nav_date'])
     else:
-        print("⚠️ Warning: 'amfi_code' missing, skipping sorting and grouping.")
+        print(" Warning: 'amfi_code' missing, skipping sorting and grouping.")
         df = df.drop_duplicates(subset=['nav_date'])
     
     # 8. Validate NAV > 0
@@ -46,7 +46,7 @@ def clean_nav_history():
         df = df[df['nav'] > 0]
     
     df.to_csv(f'{PROCESSED_DIR}clean_nav.csv', index=False)
-    print(f"✅ Saved clean_nav.csv ({len(df)} rows)\n")
+    print(f" Saved clean_nav.csv ({len(df)} rows)\n")
 
 def clean_transactions():
     print("Cleaning 08_investor_transactions.csv...")
@@ -68,7 +68,7 @@ def clean_transactions():
         df['transaction_date'] = pd.to_datetime(df['transaction_date'], errors='coerce', dayfirst=True)
         
     df.to_csv(f'{PROCESSED_DIR}clean_transactions.csv', index=False)
-    print(f"✅ Saved clean_transactions.csv")
+    print(f" Saved clean_transactions.csv")
 
 def clean_performance():
     print("Cleaning 07_scheme_performance.csv...")
@@ -90,7 +90,7 @@ def clean_performance():
         df['expense_ratio'] = np.clip(df['expense_ratio'], 0.1, 2.5)
         
     df.to_csv(f'{PROCESSED_DIR}clean_performance.csv', index=False)
-    print(f"✅ Saved clean_performance.csv")
+    print(f" Saved clean_performance.csv")
 
 def clean_remaining_datasets():
     print("Cleaning remaining datasets...")
@@ -107,7 +107,7 @@ def clean_remaining_datasets():
             
             clean_name = f"clean_{filename.split('_', 1)[1]}"
             df.to_csv(f'{PROCESSED_DIR}{clean_name}', index=False)
-            print(f"✅ Saved {clean_name}")
+            print(f" Saved {clean_name}")
 
 if __name__ == "__main__":
     clean_nav_history()
