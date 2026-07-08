@@ -191,7 +191,3 @@ The integrated business analytics workspace `bluestock_mf.pbix` is split into **
 ## ⚖️ Disclaimer
 
 All raw attributes are compiled from publicly documented AMFI India, NSE, and BSE sheets for study, assessment, and training evaluations at Bluestock Fintech Pvt. Ltd. It does not signify regulated financial advice.
-
-```
-
-```
