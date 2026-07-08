@@ -104,38 +104,6 @@ Data transforms into a high-speed relational star schema optimized on `amfi_code
 
 
 * **Facts**: `fact_nav` (46K records), `fact_transactions` (32K+ orders), `fact_performance`, `fact_portfolio`, `fact_aum`, `fact_sip_industry`.
-
-
-
----
-
-##  Financial Mathematics Implemented
-
-All calculations handle localized business day logic and trading tracking parameters:
-
-* **Compound Annual Growth Rate (CAGR)**:
-
-
-
-$$\text{CAGR} = \left(\frac{\text{NAV}_{\text{End}}}{\text{NAV}_{\text{Start}}}\right)^{\frac{1}{n}} - 1$$
-
-
-* **Sharpe Ratio**: Uses standard annualized trading variance benchmarks scaled against a risk-free proxy ($R_f = 6.5\%$):
-
-
-
-$$\text{Sharpe} = \frac{R_p - R_f}{\sigma_p \cdot \sqrt{252}}$$
-
-
-* **Alpha & Market Beta**: Derived via Ordinary Least Squares (OLS) tracking regressions comparing historical daily return movements against the Nifty 100 benchmark.
-
-
-* **95% Historical Value at Risk (VaR)**: Isolates the 5th percentile line of historical returns to track downside safety margin levels.
-
-
-
----
-
 ##  Execution & Testing Protocol
 
 ### 1. Setup Environment
