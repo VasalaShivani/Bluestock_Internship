@@ -1,0 +1,218 @@
+--- BLUESTOCK MF ANALYTICS: SQL QUERY RESULTS ---
+
+--- Query 1 ---
+[ERROR] Could not run query: Execution failed on sql '-- 1. Top 5 funds by 5-Year Return 
+SELECT df.scheme_name, fp."5y_return"
+FROM fact_performance fp
+JOIN dim_fund df ON fp.amfi_code = df.amfi_code
+ORDER BY fp."5y_return" DESC
+LIMIT 5': no such column: fp.5y_return
+
+--- Query 2 ---
+-- 2. Average NAV per month
+SELECT strftime('%Y-%m', nav_date) AS month, AVG(nav) AS avg_nav
+FROM fact_nav
+GROUP BY strftime('%Y-%m', nav_date)
+ORDER BY month DESC
+
+Result:
+  month    avg_nav
+2026-12 345.682094
+2026-11 348.439691
+2026-10 347.005019
+2026-09 344.269991
+2026-08 349.157139
+2026-07 348.359837
+2026-06 345.928403
+2026-05 343.674490
+2026-04 346.804188
+2026-03 345.339916
+2026-02 342.002834
+2026-01 346.913082
+2025-12 309.858793
+2025-11 309.004575
+2025-10 307.681681
+2025-09 308.891953
+2025-08 309.320507
+2025-07 304.354867
+2025-06 304.663815
+2025-05 309.342269
+2025-04 308.724000
+2025-03 307.282824
+2025-02 308.166361
+2025-01 308.645312
+2024-12 275.456993
+2024-11 276.810722
+2024-10 276.376925
+2024-09 275.636693
+2024-08 274.167832
+2024-07 275.250307
+2024-06 276.225493
+2024-05 275.113266
+2024-04 276.314582
+2024-03 275.871337
+2024-02 275.247506
+2024-01 273.638110
+2023-12 246.352759
+2023-11 246.556822
+2023-10 242.924143
+2023-09 243.031425
+2023-08 246.506834
+2023-07 246.018009
+2023-06 245.081217
+2023-05 245.477620
+2023-04 245.851258
+2023-03 242.277101
+2023-02 242.189006
+2023-01 245.845267
+2022-12 215.597313
+2022-11 213.383344
+2022-10 213.335379
+2022-09 215.694243
+2022-08 215.266040
+2022-07 214.716531
+2022-06 215.095346
+2022-05 215.284789
+2022-04 212.984777
+2022-03 213.065071
+2022-02 215.200483
+2022-01 214.615574
+   None 206.786692
+
+==================================================
+
+--- Query 3 ---
+[ERROR] Could not run query: Execution failed on sql '
+
+-- 3. SIP inflow YoY growth
+SELECT 
+    t1.month_year AS Current_Month,
+    t1.sip_inflow_cr AS Current_Inflow,
+    t2.sip_inflow_cr AS Last_Year_Inflow,
+    ROUND(((t1.sip_inflow_cr - t2.sip_inflow_cr) / t2.sip_inflow_cr) * 100, 2) AS YoY_Growth_Pct
+FROM fact_sip_inflows t1
+LEFT JOIN fact_sip_inflows t2 
+    ON substr(t1.month_year, 1, 4) - 1 || substr(t1.month_year, 5) = t2.month_year': no such column: t1.month_year
+
+--- Query 4 ---
+[ERROR] Could not run query: Execution failed on sql '
+
+-- 4. Transactions by state
+SELECT state, COUNT(*) as total_transactions, SUM(amount) as total_volume
+FROM fact_transactions
+GROUP BY state
+ORDER BY total_volume DESC': no such column: amount
+
+--- Query 5 ---
+[ERROR] Could not run query: Execution failed on sql '
+
+-- 5. Funds with expense_ratio < 1%
+SELECT df.scheme_name, fp.expense_ratio
+FROM fact_performance fp
+JOIN dim_fund df ON fp.amfi_code = df.amfi_code
+WHERE fp.expense_ratio < 1.0
+ORDER BY fp.expense_ratio ASC': no such column: fp.expense_ratio
+
+--- Query 6 ---
+[ERROR] Could not run query: Execution failed on sql '
+
+-- 6. Total Lumpsum vs SIP volume
+SELECT transaction_type, SUM(amount) as total_invested
+FROM fact_transactions
+GROUP BY transaction_type': no such column: amount
+
+--- Query 7 ---
+-- 7. Count of funds with negative Sharpe ratio
+SELECT COUNT(*) as funds_with_negative_sharpe
+FROM fact_performance
+WHERE negative_sharpe_flag = 1
+
+Result:
+ funds_with_negative_sharpe
+                          0
+
+==================================================
+
+--- Query 8 ---
+[ERROR] Could not run query: Execution failed on sql '
+
+-- 8. Top 5 funds by 3-year return
+SELECT df.scheme_name, fp."3y_return"
+FROM fact_performance fp
+JOIN dim_fund df ON fp.amfi_code = df.amfi_code
+ORDER BY fp."3y_return" DESC
+LIMIT 5': no such column: fp.3y_return
+
+--- Query 9 ---
+-- 9. Number of schemes per Fund House
+SELECT fund_house, COUNT(amfi_code) as total_schemes
+FROM dim_fund
+GROUP BY fund_house
+ORDER BY total_schemes DESC
+
+Result:
+              fund_house  total_schemes
+         SBI Mutual Fund              5
+         Nippon India MF              5
+     ICICI Prudential MF              5
+        HDFC Mutual Fund              5
+       Kotak Mahindra MF              4
+        Axis Mutual Fund              4
+         UTI Mutual Fund              3
+          Mirae Asset MF              3
+         DSP Mutual Fund              3
+Aditya Birla Sun Life MF              3
+
+==================================================
+
+--- Query 10 ---
+-- 10. Daily Return volatility (Max vs Min NAV)
+SELECT amfi_code, MAX(nav) as highest_nav, MIN(nav) as lowest_nav, ROUND((MAX(nav) - MIN(nav)), 2) as absolute_variance
+FROM fact_nav
+GROUP BY amfi_code
+
+Result:
+ amfi_code  highest_nav  lowest_nav  absolute_variance
+    100016     667.9269    412.2930             255.63
+    100025      32.6190     26.1728               6.45
+    100033     367.6979     93.5553             274.14
+    101206     803.0014    300.9607             502.04
+    101207      78.1011     36.9015              41.20
+    101208     408.6821    310.6977              97.98
+    102885     187.9295     85.5509             102.38
+    102886     169.8164    116.4510              53.37
+    102887     415.8565    149.9155             265.94
+    118632     114.4385     42.8033              71.64
+    118633      89.7528     45.1271              44.63
+    118634     138.9727     58.9776              80.00
+    118635     333.3364    150.4968             182.84
+    118636      37.4725     30.1152               7.36
+    119092      56.6987     35.1288              21.57
+    119093      59.9798     33.3263              26.65
+    119094     211.7678     61.5099             150.26
+    119095     102.9122     48.0021              54.91
+    119120      55.0609     41.9077              13.15
+    119551     149.4022     50.2783              99.12
+    119552     138.4084     56.4224              81.99
+    119598     321.3869     88.0925             233.29
+    119599     159.0324     79.9342              79.10
+    120503     116.4199     55.3983              61.02
+    120504     164.2321     59.4577             104.77
+    120505     476.3696    133.1682             343.20
+    120506     410.2909    202.0343             208.26
+    120507     387.0632    285.7447             101.32
+    120841     460.6766    246.6585             214.02
+    120842      81.9896     58.3331              23.66
+    120843     179.7035     44.9793             134.72
+    120844    4253.4480   3180.6318            1072.82
+    125497    1253.6792    534.9053             718.77
+    125498     191.4313    100.3077              91.12
+    148567     251.6557     70.2514             181.40
+    148568     204.2712     80.0924             124.18
+    148569      89.9231     28.8620              61.06
+    149322     648.7075    296.9505             351.76
+    149323     252.3349     73.7860             178.55
+    149324     332.2347     73.6757             258.56
+
+==================================================
+
